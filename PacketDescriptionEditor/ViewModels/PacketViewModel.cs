@@ -1,0 +1,50 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PacketDescriptionEditor.ViewModels
+{
+    public class PacketViewModel : ViewModelBase
+    {
+        byte _id;
+        public byte Id
+        {
+            get { return _id; }
+            set { SetValue(ref _id, value); }
+        }
+
+        string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            set { SetValue(ref _name, value); }
+        }
+
+        string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { SetValue(ref _description, value); }
+        }
+
+        ObservableCollection<FieldViewModel> _fields = new ObservableCollection<FieldViewModel>();
+        public ObservableCollection<FieldViewModel> Fields
+        {
+            get { return _fields; }
+            set { SetValue(ref _fields, value); }
+        }
+
+        string _size;
+
+        public string Size
+        {
+            get { return _size; }
+            set { SetValue(ref _size, value); }
+        }
+    }
+}
