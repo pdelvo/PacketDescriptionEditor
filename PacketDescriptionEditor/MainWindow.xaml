@@ -55,16 +55,8 @@
                     <TextBlock FontSize="30" Text=")" Grid.Column="3"/>
                 </Grid>
                 <TextBox Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Text="{Binding Description}" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible"/>
-                <ListView Grid.Row="2" ItemsSource="{Binding Fields}" Margin="10">
-                    <ListView.View>
-                        <GridView AllowsColumnReorder="True">
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}"/>
-                            <GridViewColumn Header="Example" DisplayMemberBinding="{Binding Example}"/>
-                            <GridViewColumn Header="Notes" DisplayMemberBinding="{Binding Note}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <DataGrid Grid.Row="2" ItemsSource="{Binding Fields}" Margin="10">
+</DataGrid>
             </Grid>
 </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
