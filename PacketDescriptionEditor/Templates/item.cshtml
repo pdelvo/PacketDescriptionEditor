@@ -1,0 +1,44 @@
+@using System.Linq
+{{anchor|0x@(int.Parse(Model.Id).ToString("X"))}}
+=== @Model.Name (0x@(int.Parse(Model.Id).ToString("X"))) ===
+@Model.Description
+
+@{
+    var fieldCount = Model.Fields.Count;
+    var enumerable = ((System.Collections.IEnumerable)Model.Fields).OfType<dynamic>();
+    var first = enumerable.First();
+    enumerable = enumerable.Skip(1); // skip first element
+    int index = 1;
+}
+
+@* Wiki Table *@
+{| class="wikitable"
+|- class="row0"
+! class="col0" | Packet ID
+! class="col1" | Field Name
+! class="col2" | Field Type
+! class="col3" | Example
+! class="col4" | Notes
+|- class="row1"
+| class="col0 centeralign" rowspan="@fieldCount" | 0x@(int.Parse(Model.Id).ToString("X"))
+| class="col1 centeralign" | @first.Name
+| class="col2 centeralign" | @first.Type
+| class="col3 centeralign" | @first.Example
+| class="col4" | @first.Notes
+@foreach(var item in enumerable)
+{
+index++;
+<text>
+|- class="row@(index)"
+| class="col0 centeralign" | @item.Name
+| class="col1 centeralign" | @item.Type
+| class="col2 centeralign" | @item.Example
+| class="col3" | @first.Notes
+</text>
+}
+@{ index++;}
+|- class="row@(index)"
+! class="col0" | Total Size:
+| class="col1 rightalign" colspan="4" | @Model.Size
+|}
+@* End Table *@

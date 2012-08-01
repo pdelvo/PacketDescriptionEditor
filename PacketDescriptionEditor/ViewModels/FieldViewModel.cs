@@ -41,6 +41,19 @@ namespace PacketDescriptionEditor.ViewModels
             set { SetValue(ref _note, value); }
         }
 
+        public FieldViewModel()
+        {
+
+        }
+
+        public FieldViewModel(FieldConfig config)
+        {
+            Name = config.Name;
+            Type = config.Type;
+            Example = config.Example;
+            Note = config.Note;
+        }
+
         public FieldConfig GetConfig()
         {
             return new FieldConfig

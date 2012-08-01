@@ -103,10 +103,15 @@ namespace PacketDescriptionEditor.ViewModels
                 };
                 if (dialog.ShowDialog() == true)
                 {
-
+                    var serializer = new XmlSerializer(typeof(DescriptionConfig));
+                    using (FileStream fileStream = File.Open(dialog.FileName, FileMode.Open))
+                    {
+                        SetConfig((DescriptionConfig)serializer.Deserialize(fileStream));
+                    }
                 }
             }
         }
+
 
         public void ExportState()
         {
@@ -143,6 +148,16 @@ namespace PacketDescriptionEditor.ViewModels
             }
 
             return config;
+        }
+
+        private void SetConfig(DescriptionConfig descriptionConfig)
+        {
+            SelectedPacket = null;
+            Packets = new ObservableCollection<PacketViewModel>();
+            foreach (var item in descriptionConfig.Packets)
+            {
+                Packets.Add(new PacketViewModel(item));
+            }
         }
 
         #endregion

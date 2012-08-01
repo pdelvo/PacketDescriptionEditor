@@ -48,6 +48,20 @@ namespace PacketDescriptionEditor.ViewModels
             set { SetValue(ref _size, value); }
         }
 
+        public PacketViewModel()
+        {
+
+        }
+
+        public PacketViewModel(PacketConfig item)
+        {
+            Name = item.Name;
+            Description = item.Description;
+            Fields = new ObservableCollection<FieldViewModel>(item.Fields.Select(f => new FieldViewModel(f)));
+            Size = item.Size;
+
+        }
+
         public PacketConfig GetConfig()
         {
             return new PacketConfig

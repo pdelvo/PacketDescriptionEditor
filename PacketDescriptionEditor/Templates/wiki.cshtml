@@ -1,0 +1,7 @@
+@using RazorEngine
+@using System.IO
+@Model.Data.Header
+@foreach(var item in Model.Data.Packets)
+{
+    @Razor.Parse(File.ReadAllText("item.cshtml"), item);
+}
