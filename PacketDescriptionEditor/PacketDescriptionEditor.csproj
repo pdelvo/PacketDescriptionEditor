@@ -70,6 +70,9 @@
     </ApplicationDefinition>
     <Compile Include="Helper\HexConverter.cs" />
     <Compile Include="Helper\HexInputScope.cs" />
+    <Compile Include="Model\DescriptionConfig.cs" />
+    <Compile Include="Model\FieldConfig.cs" />
+    <Compile Include="Model\PacketConfig.cs" />
     <Compile Include="ViewModels\FieldViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PacketViewModel.cs" />

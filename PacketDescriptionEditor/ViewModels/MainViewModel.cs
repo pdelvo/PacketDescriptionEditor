@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Serialization;
 using Microsoft.Expression.Interactivity.Core;
 using Microsoft.Win32;
+using PacketDescriptionEditor.Model;
 
 namespace PacketDescriptionEditor.ViewModels
 {
@@ -119,8 +122,27 @@ namespace PacketDescriptionEditor.ViewModels
             }; 
             if (dialog.ShowDialog() == true)
             {
-
+                DescriptionConfig config = GetConfig();
+                var serializer = new XmlSerializer(typeof(DescriptionConfig));
+                using (FileStream fileStream = File.Create(dialog.FileName))
+                {
+                    serializer.Serialize(fileStream, config);
+                }
             }
+        }
+
+        private DescriptionConfig GetConfig()
+        {
+            DescriptionConfig config = new DescriptionConfig();
+
+            config.Packets = new List<PacketConfig>();
+
+            foreach (var item in Packets)
+            {
+                config.Packets.Add(item.GetConfig());
+            }
+
+            return config;
         }
 
         #endregion

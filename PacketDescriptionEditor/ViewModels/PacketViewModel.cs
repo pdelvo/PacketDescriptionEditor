@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PacketDescriptionEditor.Model;
 
 namespace PacketDescriptionEditor.ViewModels
 {
@@ -45,6 +46,18 @@ namespace PacketDescriptionEditor.ViewModels
         {
             get { return _size; }
             set { SetValue(ref _size, value); }
+        }
+
+        public PacketConfig GetConfig()
+        {
+            return new PacketConfig
+            {
+                Id = Id,
+                Name = Name,
+                Description = Description,
+                Fields = Fields.Select(f =>f.GetConfig()).ToList(),
+                Size = Size
+            };
         }
     }
 }

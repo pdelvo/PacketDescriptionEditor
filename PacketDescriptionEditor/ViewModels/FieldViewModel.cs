@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PacketDescriptionEditor.Model;
 
 namespace PacketDescriptionEditor.ViewModels
 {
@@ -38,6 +39,17 @@ namespace PacketDescriptionEditor.ViewModels
         {
             get { return _note; }
             set { SetValue(ref _note, value); }
+        }
+
+        public FieldConfig GetConfig()
+        {
+            return new FieldConfig
+            {
+                Name = Name,
+                Type = Type,
+                Example = Example,
+                Note = Note
+            };
         }
     }
 }
