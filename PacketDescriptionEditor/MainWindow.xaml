@@ -33,36 +33,36 @@
             </Grid.RowDefinitions>
             <Grid Visibility="{Binding IsPacketSelected, Converter={StaticResource booleanToVisibilityConverter}}" >
                 <Grid DataContext="{Binding SelectedPacket}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid Margin="20" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" MinWidth="70"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto" MinWidth="30"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBox BorderThickness="0" FontSize="30" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
-                    <TextBlock FontSize="30" Text=" (0x" Grid.Column="1"/>
-                    <TextBox BorderThickness="0" MaxLength="2" InputScope="{StaticResource hexInputScope}" FontSize="30" Text="{Binding Id, Converter={StaticResource hexConverter}}" Grid.Column="2"/>
-                    <TextBlock FontSize="30" Text=")" Grid.Column="3"/>
+                    <Grid Margin="20" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" MinWidth="70"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" MinWidth="30"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox BorderThickness="0" FontSize="30" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
+                        <TextBlock FontSize="30" Text=" (0x" Grid.Column="1"/>
+                        <TextBox BorderThickness="0" MaxLength="2" InputScope="{StaticResource hexInputScope}" FontSize="30" Text="{Binding Id, Converter={StaticResource hexConverter}}" Grid.Column="2"/>
+                        <TextBlock FontSize="30" Text=")" Grid.Column="3"/>
+                    </Grid>
+                    <TextBox Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Text="{Binding Description}" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible"/>
+                    <DataGrid Grid.Row="2" ItemsSource="{Binding Fields}" Margin="10">
+                    </DataGrid>
                 </Grid>
-                <TextBox Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Text="{Binding Description}" AcceptsReturn="True" AcceptsTab="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible"/>
-                <DataGrid Grid.Row="2" ItemsSource="{Binding Fields}" Margin="10">
-</DataGrid>
             </Grid>
-</Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-                <Button Content="Save" Margin="5" Width="50"/>
                 <Button Content="Export" Margin="5" Width="50" Command="{Binding ExportCommand}"/>
-                <Button Content="Import" Margin="5" Width="50" Command="{Binding ImportCommand}"/>
+                <Button Content="Save" Margin="5" Width="50" Command="{Binding SaveCommand}"/>
+                <Button Content="Load" Margin="5" Width="50" Command="{Binding LoadCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>

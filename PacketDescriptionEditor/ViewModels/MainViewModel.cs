@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,7 +11,9 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using Microsoft.Expression.Interactivity.Core;
 using Microsoft.Win32;
+using PacketDescriptionEditor.Helper;
 using PacketDescriptionEditor.Model;
+using RazorEngine;
 
 namespace PacketDescriptionEditor.ViewModels
 {
@@ -20,7 +23,8 @@ namespace PacketDescriptionEditor.ViewModels
         public MainViewModel()
         {
             _addPacketCommand = new ActionCommand(AddEmptyPacket);
-            _importCommand = new ActionCommand(ImportState);
+            _loadCommand = new ActionCommand(LoadState);
+            _saveCommand = new ActionCommand(SaveState);
             _exportCommand = new ActionCommand(ExportState);
 
             LinkProperties("SelectedPacket", "IsPacketSelected");
@@ -50,11 +54,19 @@ namespace PacketDescriptionEditor.ViewModels
             get { return _addPacketCommand; }
         }
 
-        ActionCommand _importCommand;
+        ActionCommand _loadCommand;
 
-        public ICommand ImportCommand
+        public ICommand SaveCommand
         {
-            get { return _importCommand; }
+            get { return _loadCommand; }
+        }
+
+        ActionCommand _saveCommand;
+
+        public ActionCommand LoadCommand
+        {
+            get { return _saveCommand; }
+            set { SetValue(ref _saveCommand, value); }
         }
 
         ActionCommand _exportCommand;
@@ -86,7 +98,7 @@ namespace PacketDescriptionEditor.ViewModels
             });
         }
 
-        public void ImportState()
+        public void LoadState()
         {
             if (MessageBox.Show("Do you really want to import a saved state and override everything?", "Import", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
@@ -113,7 +125,7 @@ namespace PacketDescriptionEditor.ViewModels
         }
 
 
-        public void ExportState()
+        public void SaveState()
         {
             SaveFileDialog dialog = new SaveFileDialog
             {
@@ -128,11 +140,16 @@ namespace PacketDescriptionEditor.ViewModels
             if (dialog.ShowDialog() == true)
             {
                 DescriptionConfig config = GetConfig();
-                var serializer = new XmlSerializer(typeof(DescriptionConfig));
-                using (FileStream fileStream = File.Create(dialog.FileName))
-                {
-                    serializer.Serialize(fileStream, config);
-                }
+                SaveState(dialog.FileName, config);
+            }
+        }
+
+        private static void SaveState(string fileName, DescriptionConfig config)
+        {
+            var serializer = new XmlSerializer(typeof(DescriptionConfig));
+            using (FileStream fileStream = File.Create(fileName))
+            {
+                serializer.Serialize(fileStream, config);
             }
         }
 
@@ -157,6 +174,34 @@ namespace PacketDescriptionEditor.ViewModels
             foreach (var item in descriptionConfig.Packets)
             {
                 Packets.Add(new PacketViewModel(item));
+            }
+        }
+
+        public void ExportState()
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                CheckFileExists = false,
+                CheckPathExists = true,
+                DefaultExt = ".txt",
+                DereferenceLinks = true,
+                Filter = "Text files (*.xml)|*.*",
+                FileName = "packets.txt",
+                Title = "Export file"
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                var xmlPath = Path.GetTempFileName();
+                SaveState(xmlPath, GetConfig());
+                var oldDirectory = Environment.CurrentDirectory;
+                Environment.CurrentDirectory = new FileInfo("Templates/wiki.cshtml").DirectoryName;
+                string str = File.ReadAllText("wiki.cshtml");
+                dynamic document = new DynamicXDocument(xmlPath);
+
+                var result = Razor.Parse(str, new { Data = document });
+                result = WebUtility.HtmlDecode(result);
+                File.WriteAllText(dialog.FileName, result);
+                Environment.CurrentDirectory = oldDirectory;
             }
         }
 
